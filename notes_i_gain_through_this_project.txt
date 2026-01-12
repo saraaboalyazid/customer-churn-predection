@@ -1,0 +1,49 @@
+EDA :
+Q: How to Classify Features When You DON’T Know the Columns
+first : start with d type 
+
+Detect Numeric-but-Categorical Features
+Rule: Few unique values → categorical
+
+Detect Categorical-but-Numeric Features
+Rule: Mostly numeric strings
+
+
+Cardinality Analysis: cardinality = df.nunique().sort_values()
+Very high cardinality → IDs or free text
+Medium → categorical
+Very low → binary
+
+Distribution-Based Checks: df[col].hist()
+
+Smooth distribution → numerical
+Spikes → categorical
+
+
+Correlation Signal (Numerical Only) : df[num_candidates].corr()
+If a column:
+Correlates smoothly with others → numerical
+Has no structure → maybe categorical code
+
+-----------------------------------------------------------------
+Distribution of Each Numerical Feature
+histogram 
+Symmetric → roughly normal
+Long tail → skewed
+Multiple peaks → possible subgroups
+
+Skewness: df[numerical_features].skew()
+≈ 0 → symmetric
+> 1 → right-skewed
+< -1 → left-skewed
+------------------------------------------------------------
+Range & Scale
+.describe()
+Look at:
+
+min / max → range
+mean vs median → skew
+std → scale differences
+--------------------------------------------------------
+Detect Outliers (Boxplots)
+-----------------------------------------------------

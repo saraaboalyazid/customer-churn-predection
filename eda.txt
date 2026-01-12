@@ -1,0 +1,186 @@
+1.  Understand the Problem & Target
+
+What is the business question?
+The goal is to predict whether a customer will churn (leave the company) or remain an active customer based on their demographic information, subscribed services, and billing details.
+What does the target variable represent?
+hurn ( yes / no )
+yes means customer churns 
+What does positive class mean? (e.g. Churn = Yes)
+churn = yes 
+
+What kind of ML task is this? (binary classification)
+binary classfication 
+--------------------------------------------------------------
+
+ 2. Get a High-Level View of the Data
+
+Number of rows (samples)
+7043
+Number of columns (features)
+21 
+Types of features:
+
+Numerical
+['SeniorCitizen', 'tenure', 'MonthlyCharges']
+Categorical
+['customerID', 'gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'TotalCharges', 'Churn']
+Any obvious ID columns that don’t help prediction?
+dropped 
+------------------------------------------------------
+
+3. Inspect the Target Distribution
+
+How many samples per class?
+No     5174
+Yes    1869
+Is the dataset balanced or imbalanced?
+imbalanced
+What is the churn rate?
+73%
+
+Which metrics you’ll use later
+( f1 score , roc )
+Whether class weighting might be needed, yess
+--------------------------------------------------
+
+4. Check Data Types & Data Quality
+
+Are numerical features stored correctly?
+no total chargers need to be converted 
+
+Any features stored as text but should be numeric?
+TotalCharges
+Are there empty strings, strange values, or formatting issues?
+no , no , no 
+Goal: spot problems early
+------------------------------------------------
+5. Missing Values Analysis
+
+Which columns have missing values?
+TotalCharges 
+How many missing values?
+11
+Are missing values random or systematic?
+systematic
+Decision (later):
+impute ( simpleimputer ( mean)
+Drop rows?
+no 
+Impute values?
+yes 
+Treat “missing” as its own category?
+no
+------------------------------------------------------
+6. Separate Feature Types
+
+Identify:
+
+Numerical features
+
+['tenure', 'MonthlyCharges', 'TotalCharges']
+Categorical features
+
+Remove Churn from categorical_features
+Treat it as target, not an input
+
+Note which categorical features are:
+
+Binary
+['gender',
+ 'SeniorCitizen',
+ 'Partner',
+ 'Dependents',
+ 'PhoneService',
+ 'PaperlessBilling',
+ 'Churn']
+
+Multi-category
+['MultipleLines',
+ 'InternetService',
+ 'OnlineSecurity',
+ 'OnlineBackup',
+ 'DeviceProtection',
+ 'TechSupport',
+ 'StreamingTV',
+ 'StreamingMovies',
+ 'Contract',
+ 'PaymentMethod']
+This will guide encoding & scaling decisions later.
+---------------------------------------------
+7. Explore Numerical Features
+
+For each numerical feature:
+
+Distribution (skewed or normal?)
+MonthlyCharges   left skewed 
+TotalCharges     right skewd
+Range & scale
+data needs to be normazlized 
+Presence of outliers
+yes
+Ask:
+
+Does this feature differ between churned vs non-churned users?
+yes 
+Will this feature need scaling?
+yes 
+--------------------------------------------
+8. Explore Categorical Features
+
+For each categorical feature:
+
+Unique values
+
+Frequency of each category
+
+Relationship with the target (churn rate per category)
+
+Look for:
+
+Categories strongly associated with churn
+
+Rare categories that might cause noise
+---------------------------------------------
+9. Feature–Target Relationships
+
+Ask:
+
+Which features seem most predictive of churn?
+
+Which features show clear separation between classes?
+
+Which features might be redundant?
+
+This helps later with:
+
+Feature selection
+
+Tree-based models
+
+Interpretation
+-----------------------------------------------
+10. Correlation & Redundancy (Numerical Only)
+
+Are any numerical features highly correlated?
+
+Do some features carry almost the same information?
+
+Decision:
+
+Keep both?
+
+Drop one?
+
+Use PCA later?
+----------------------------------------
+Based on the EDA:
+
+Use stratified cross-validation due to class imbalance.
+
+Prefer F1-score and ROC-AUC as evaluation metrics.
+
+Apply feature scaling for Logistic Regression, SVM, KNN, and PCA.
+
+Consider tree-based models (Random Forest, Gradient Boosting) to handle non-linear relationships and feature interactions.
+
+Explore ensemble methods and regularization to mitigate redundancy among numerical features.

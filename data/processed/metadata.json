@@ -1,0 +1,38 @@
+{
+    "numerical_features": [
+        "tenure",
+        "MonthlyCharges",
+        "TotalCharges"
+    ],
+    "categorical_features": [
+        "gender",
+        "SeniorCitizen",
+        "Partner",
+        "Dependents",
+        "PhoneService",
+        "PaperlessBilling",
+        "MultipleLines",
+        "InternetService",
+        "OnlineSecurity",
+        "OnlineBackup",
+        "DeviceProtection",
+        "TechSupport",
+        "StreamingTV",
+        "StreamingMovies",
+        "Contract",
+        "PaymentMethod"
+    ],
+    "numerical_imputation": "median",
+    "categorical_imputation": "most_frequent",
+    "scaling": "StandardScaler",
+    "encoding": "OneHotEncoder",
+    "split": "80/20 stratified",
+    "output_shape_train": [
+        5634,
+        46
+    ],
+    "output_shape_test": [
+        1409,
+        46
+    ]
+}

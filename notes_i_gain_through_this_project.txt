@@ -25,6 +25,13 @@ If a column:
 Correlates smoothly with others → numerical
 Has no structure → maybe categorical code
 
+Check Relationship to the Target:
+
+Does feature increase smoothly as the value increases?
+→ Continuous feature
+
+Does churn jump between specific values?
+→ Categorical encoded as numbers
 -----------------------------------------------------------------
 Distribution of Each Numerical Feature
 histogram 
@@ -47,3 +54,63 @@ std → scale differences
 --------------------------------------------------------
 Detect Outliers (Boxplots)
 -----------------------------------------------------
+missing values:
+
+Type     Meaning 
+MCAR : Missing Completely At Random  
+MAR: Missing At Random (but explainable)            
+MNAR: Missing Not At Random (systematic & dangerous) 
+
+Type	What you should do
+MCAR	Mean/median imputation ok
+MAR	Model-based imputation
+MNAR	Create a “missing” category or indicator
+
+First: Detect missingness:
+df.isna().sum()
+
+For each column with missing values:Create a missing indicator
+df["X_is_missing"] = df["X"].isna().astype(int)
+
+Check if missingness matters (is it random?)
+df.groupby("X_is_missing")["target"].mean()
+
+Result	        Meaning
+Same churn	MCAR → random
+Very different	MAR or MNAR → informative
+
+Check if other columns explain the missingness (MAR vs MNAR)
+df.groupby("OtherColumn")["X_is_missing"].mean()
+If one category explains it → MAR
+If not → MNAR
+
+Decide the strategy
+Final safe method (works for MAR & MNAR)
+df["X_is_missing"] = df["X"].isna().astype(int)
+df["X"] = df["X"].fillna(df["X"].median())
+-----------------------------------------------------------------------
+Encoding Types:
+
+| Feature type                   | Encoder        | Output         |
+| ------------------------------ | -------------- | -------------- |
+| Ordinal categorical            | OrdinalEncoder | NumPy          |
+| Nominal categorical            | OneHotEncoder  | NumPy / sparse |
+| Nominal categorical (EDA only) | pd.get_dummies | DataFrame      |
+| Target labels                  | LabelEncoder   | 1D array       |
+
+
+i'm fitting the encoder for the cat features on all the features means on x train and x test , but for the train ( fit transform )
+for cat features :
+In notebooks → get_dummies.
+In production → OneHotEncoder inside pipelines.
+----------------------------------------------------------------
+scaling :
+MinMaxScaler is very sensitive to outliers
+standardscaler Much more stable with skewed data
+
+MinMaxScaler can hurt:
+
+Linear models (coefficients become unstable)
+KNN (distance distortion)
+---------------------------------------------------------------
+ColumnTransformer outputs a NumPy array
